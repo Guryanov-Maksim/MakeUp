@@ -14,10 +14,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^5.2.3",
     "fastify": "^4.17.0",
     "fastify-cli": "^5.7.1"
   },
   "devDependencies": {
+    "sass": "^1.62.1",
     "vite": "^4.3.5"
   }
 }
