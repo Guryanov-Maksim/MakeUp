@@ -36,9 +36,6 @@ jobs:
 
     - name: Build frontend
       run: make build
-    
-    - name: Start server
-      run: make start-backend
 
     - name: Upload GitHub Pages artifact
       uses: actions/upload-pages-artifact@v1.0.8
