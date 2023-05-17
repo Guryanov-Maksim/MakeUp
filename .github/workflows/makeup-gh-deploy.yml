@@ -41,6 +41,7 @@ jobs:
       uses: actions/upload-pages-artifact@v1.0.8
       with:
         path: ./dist
+        id: deployment
 
   deploy:
     runs-on: ubuntu-20.04
