@@ -5,7 +5,7 @@ start:
 	npm run start
 
 start-backend:
-	npm run start
+	npm run start:backend
 
 start-frontend:
 	npm run start:frontend
