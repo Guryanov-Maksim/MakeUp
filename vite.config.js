@@ -5,6 +5,7 @@ const root = path.resolve(__dirname, 'src');
 const outDir = path.resolve(__dirname, 'dist');
 
 export default defineConfig(({ mode }) => ({
+  base: '',
   root,
   resolve: {
     alias: {
