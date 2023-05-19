@@ -146,8 +146,8 @@ const prevButtonHandler = () => {
 };
 
 const photoLinks = [
-  '/assets/images/photo.jpg',
-  '/assets/images/1.jpg',
+  '/MakeUp/assets/images/photo.jpg',
+  '/MakeUpassets/images/1.jpg',
 ];
 
 const openPortfolioModal = () => {
