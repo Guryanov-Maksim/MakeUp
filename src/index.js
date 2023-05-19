@@ -27,6 +27,8 @@ document.addEventListener('click', (e) => {
 
 // ***************** portfolio modal ****************** //
 
+const portfolioLink = document.querySelector('.portfolio__link');
+
 let activeProtfolioPhotoIndex = null;
 
 portfolioLink.addEventListener('click', (e) => {
