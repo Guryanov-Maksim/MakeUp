@@ -1,4 +1,6 @@
 import 'bootstrap';
+import photo1Url from './assets/images/photo.jpg';
+import photo2Url from './assets/images/1.jpg';
 
 import './style.scss';
 
@@ -146,8 +148,8 @@ const prevButtonHandler = () => {
 };
 
 const photoLinks = [
-  '/MakeUp/assets/images/photo.jpg',
-  '/MakeUpassets/images/1.jpg',
+  photo1Url,
+  photo2Url,
 ];
 
 const openPortfolioModal = () => {
