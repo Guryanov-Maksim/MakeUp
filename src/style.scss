@@ -417,83 +417,68 @@ a {
   }
 }
 
-// .price__header {
-//   @media (max-width: $sm) {
-//     margin-bottom: 12px;
-//   }
-// }
+.portfolio__row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 
 .portfolio__list {
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
   max-width: 1119px;
+
+  @media (max-width: $md) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
-.portfolio__row-1-list {
+.portfolio__list li {
   display: flex;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  width: calc(25% - 20px);
+  overflow: hidden;
+
+  @media (max-width: $md) {
+    width: 100%;
+  }
+
+  &:first-child {
+    width: calc(50% - 20px);
+
+    @media (max-width: $md) {
+      width: 100%;
+    }
+  }
+
+  &:nth-child(3) {
+    margin-right: 0;
+  }
+
+  &:last-child {
+    width: calc(50% - 20px);
+    margin-right: 0;
+
+    @media (max-width: $md) {
+      width: 100%;
+    }
+  }
+
+}
+
+.portfolio__link-item {
   width: 100%;
-  justify-content: space-between;
-  margin-bottom: 10px;
-
-  @media (max-width: $md) {
-    flex-direction: column;
-    width: auto;
-    align-items: center;
-  }
-}
-
-.portfolio__row-2-list {
-  display: flex;
-  justify-content: space-between;
-
-  @media (max-width: $md) {
-    flex-direction: column;
-    width: auto;
-    align-items: center;
-  }
+  height: 100%;
 }
 
 .portfolio__list img {
   width: 100%;
   max-width: 100%;
-  // position: absolute;
-}
-
-.portfolio__row-1-list li {
-  margin-right: 10px;
-  flex-grow: 1;
-  aspect-ratio : 1 / 1;
-  overflow: hidden;
-
-  @media (max-width: $md) {
-    margin-right: 0;
-    margin-bottom: 10px;
-    width: 280px;
-  }
-}
-
-.portfolio__row-2-list li {
-  margin-right: 10px;
-  flex-grow: 1;
-  aspect-ratio : 1 / 2;
-  overflow: hidden;
-
-  @media (max-width: $md) {
-    display: none;
-    margin-right: 0;
-    margin-bottom: 10px;
-    width: 280px;
-    aspect-ratio : 1 / 1;
-  }
-}
-
-.portfolio__row-1-list li:nth-child(3) {
-  margin-right: 0;
-}
-
-.portfolio__row-2-list li:nth-child(3) {
-  margin-right: 0;
 }
 
 .price {

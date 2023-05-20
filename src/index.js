@@ -42,7 +42,7 @@ document.addEventListener('click', (e) => {
 
 // ***************** portfolio modal ****************** //
 
-const portfolioLink = document.querySelectorAll('.portfolio__link');
+const portfolioLink = document.querySelectorAll('.portfolio__link-item');
 
 let activePhotoId = null;
 
