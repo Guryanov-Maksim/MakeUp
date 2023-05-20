@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'src', 'index.html'),
         portfolio: path.resolve(__dirname, 'src', 'portfolio', 'index.html'),
         contacts: path.resolve(__dirname, 'src', 'contacts', 'index.html'),
+        proces: path.resolve(__dirname, 'src', 'prices', 'index.html'),
       },
     },
   },
