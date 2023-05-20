@@ -43,8 +43,16 @@ document.addEventListener('click', (e) => {
 // ***************** portfolio modal ****************** //
 
 const portfolioLink = document.querySelectorAll('.portfolio__link-item');
+const galleryLinks = document.querySelectorAll('.gallery__link');
 
 let activePhotoId = null;
+
+galleryLinks.forEach(link => link.addEventListener('click', (e) => {
+  e.preventDefault();
+  activePhotoId = Number(e.currentTarget.dataset.id);
+
+  openPortfolioModal();
+}));
 
 portfolioLink.forEach(link => link.addEventListener('click', (e) => {
   e.preventDefault();
