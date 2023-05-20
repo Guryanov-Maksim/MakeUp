@@ -77,15 +77,15 @@ const closePortfolioModal = () => {
 const positionButton = () => {
   const img = document.querySelector(".portfolio-modal__photo");
   const btn = document.querySelector(".portfolio-modal__close-button");
-  const isMobile = navigator.userAgentData.mobile;
+  // const isMobile = navigator.userAgentData.mobile;
 
   if (img && btn) {
     const imgRect = img.getBoundingClientRect();
     const imgTop = imgRect.top - 30;
-    const imgRight = isMobile ? imgRect.right : imgRect.right + 20; // TODO: find out why mobile and desktop browsers calculate differently
+    // const imgRight = isMobile ? imgRect.right : imgRect.right + 20; // TODO: find out why sometimes mobile and desktop browsers calculate differently
 
     btn.style.top = `${imgTop}px`;
-    btn.style.right = `${window.innerWidth - imgRight}px`;
+    btn.style.right = `${window.innerWidth - imgRect.right}px`;
   }
 };
 
