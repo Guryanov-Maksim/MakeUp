@@ -250,6 +250,20 @@ const openPortfolioModal = () => {
     positionButton();
   });
 
+  const isLeftArrowKey = (keyCode) => keyCode === 37;
+  const isRightArrowKey = (keyCode) => keyCode === 39;
+
+  onkeydown = (event) => {
+    if (isLeftArrowKey(event.keyCode)) {
+      prevButtonHandler();
+      return;
+    }
+    if (isRightArrowKey(event.keyCode)) {
+      nextButtonHandler();
+      return;
+    }
+  };
+
   const div = document.createElement('div');
   div.classList.add('spinner-border', 'text-light');
   content.appendChild(div);
