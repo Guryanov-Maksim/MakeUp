@@ -91,22 +91,15 @@ const positionButton = () => {
 
 window.addEventListener("resize", positionButton);
 
-const mainPagePortfolio = [
-  { id: 1, url: photo1Url },
-  { id: 6, url: photo6Url },
-  { id: 9, url: photo9Url },
-  { id: 12, url: photo12Url },
-  { id: 15, url: photo15Url },
-  { id: 11, url: photo11Url },
-];
+let portfolioItems = [];
 
 const prevButtonHandler = () => {
-  const currentPhotoIndex = mainPagePortfolio.findIndex(photo => photo.id === activePhotoId)
+  const currentPhotoIndex = portfolioItems.findIndex(photo => photo.id === activePhotoId)
   const nextIndex = currentPhotoIndex - 1 < 0
-    ? mainPagePortfolio.length - 1
+    ? portfolioItems.length - 1
     : currentPhotoIndex - 1;
 
-    activePhotoId = mainPagePortfolio[nextIndex].id;
+    activePhotoId = portfolioItems[nextIndex].id;
 
   const content = document.querySelector('.portfolio-modal__content');
   content.innerHTML = '';
@@ -119,7 +112,7 @@ const prevButtonHandler = () => {
   });
 
   const img = document.createElement('img');
-  img.src = mainPagePortfolio[nextIndex].url;
+  img.src = portfolioItems[nextIndex].url;
   img.classList.add('portfolio-modal__photo')
   img.addEventListener("load", () => {
     content.innerHTML = '';
@@ -135,13 +128,13 @@ const prevButtonHandler = () => {
 };
 
 const nextButtonHandler = () => {
-  const currentPhotoIndex = mainPagePortfolio.findIndex(photo => photo.id === activePhotoId);
+  const currentPhotoIndex = portfolioItems.findIndex(photo => photo.id === activePhotoId);
 
-  const nextIndex = currentPhotoIndex + 1 >= mainPagePortfolio.length
+  const nextIndex = currentPhotoIndex + 1 >= portfolioItems.length
   ? 0
   : currentPhotoIndex + 1;
 
-  activePhotoId = mainPagePortfolio[nextIndex].id;
+  activePhotoId = portfolioItems[nextIndex].id;
 
   const content = document.querySelector('.portfolio-modal__content');
   content.innerHTML = '';
@@ -154,7 +147,7 @@ const nextButtonHandler = () => {
   });
 
   const img = document.createElement('img');
-  img.src = mainPagePortfolio[nextIndex].url;
+  img.src = portfolioItems[nextIndex].url;
   img.classList.add('portfolio-modal__photo')
   img.addEventListener("load", () => {
     content.innerHTML = '';
@@ -202,6 +195,8 @@ function handleSwipe() {
 }
 
 const openPortfolioModal = () => {
+  const linkItems = document.querySelectorAll('.gallery__link');
+  portfolioItems = [...linkItems].map(link => ({ id: Number(link.dataset.id), url: link.href }));
   const modal = document.createElement('div');
   modal.classList.add('portfolio-modal');
   modal.addEventListener("load", positionButton);
