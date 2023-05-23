@@ -168,7 +168,7 @@ const nextButtonHandler = () => {
 
 let startX, startY, endX, endY;
 
-function handleSwipe() {
+const handleSwipe = () => {
   const xDiff = endX - startX;
   const yDiff = endY - startY;
   if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff > 0) {
@@ -187,13 +187,13 @@ const openPortfolioModal = () => {
 
   const content = document.createElement('div');
   content.classList.add('portfolio-modal__content');
-  content.addEventListener('touchstart', function(event) {
+  content.addEventListener('touchstart', (event) => {
     const touch = event.touches[0];
     startX = touch.clientX;
     startY = touch.clientY;
   }, false);
 
-  content.addEventListener('touchend', function(event) {
+  content.addEventListener('touchend', (event) => {
     const touch = event.changedTouches[0];
     endX = touch.clientX;
     endY = touch.clientY;
