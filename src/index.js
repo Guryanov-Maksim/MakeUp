@@ -17,6 +17,24 @@ import photo15Url from './assets/images/customers/photo_0015.jpg';
 
 import './style.scss';
 
+const idToPhotoUrl = {
+  1: photo1Url,
+  2: photo2Url,
+  3: photo3Url,
+  4: photo4Url,
+  5: photo5Url,
+  6: photo6Url,
+  7: photo7Url,
+  8: photo8Url,
+  9: photo9Url,
+  10: photo10Url,
+  11: photo11Url,
+  12: photo12Url,
+  13: photo13Url,
+  14: photo14Url,
+  15: photo15Url,
+}
+
 const menuToggler = document.querySelector('.navigation__toggler');
 
 const menu = document.querySelector('.navigation__list');
@@ -42,8 +60,11 @@ document.addEventListener('click', (e) => {
 
 // ***************** portfolio modal ****************** //
 
-const portfolioLink = document.querySelectorAll('.portfolio__link-item');
 const galleryLinks = document.querySelectorAll('.gallery__link');
+const portfolioItems = [...galleryLinks].map(link => ({
+  id: Number(link.dataset.id),
+  url: idToPhotoUrl[link.dataset.id],
+}));
 
 let activePhotoId = null;
 
@@ -53,21 +74,6 @@ galleryLinks.forEach(link => link.addEventListener('click', (e) => {
 
   openPortfolioModal();
 }));
-
-portfolioLink.forEach(link => link.addEventListener('click', (e) => {
-  e.preventDefault();
-  activePhotoId = Number(e.currentTarget.dataset.id);
-
-  openPortfolioModal();
-}));
-
-const portfolioModal = document.querySelector('.portfolio-modal');
-const body = document.querySelector('body');
-
-const wheelHandler = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-};
 
 const closePortfolioModal = () => {
   const modal = document.querySelector('.portfolio-modal');
@@ -90,8 +96,6 @@ const positionButton = () => {
 };
 
 window.addEventListener("resize", positionButton);
-
-let portfolioItems = [];
 
 const prevButtonHandler = () => {
   const currentPhotoIndex = portfolioItems.findIndex(photo => photo.id === activePhotoId)
@@ -162,24 +166,6 @@ const nextButtonHandler = () => {
   content.appendChild(div);
 };
 
-const idToPhotoUrl = {
-  1: photo1Url,
-  2: photo2Url,
-  3: photo3Url,
-  4: photo4Url,
-  5: photo5Url,
-  6: photo6Url,
-  7: photo7Url,
-  8: photo8Url,
-  9: photo9Url,
-  10: photo10Url,
-  11: photo11Url,
-  12: photo12Url,
-  13: photo13Url,
-  14: photo14Url,
-  15: photo15Url,
-}
-
 let startX, startY, endX, endY;
 
 function handleSwipe() {
@@ -195,8 +181,6 @@ function handleSwipe() {
 }
 
 const openPortfolioModal = () => {
-  const linkItems = document.querySelectorAll('.gallery__link');
-  portfolioItems = [...linkItems].map(link => ({ id: Number(link.dataset.id), url: link.href }));
   const modal = document.createElement('div');
   modal.classList.add('portfolio-modal');
   modal.addEventListener("load", positionButton);
