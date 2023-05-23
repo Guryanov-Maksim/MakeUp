@@ -39,6 +39,8 @@ const menuToggler = document.querySelector('.navigation__toggler');
 
 const menu = document.querySelector('.navigation__list');
 
+const body = document.querySelector('body');
+
 const forbidScroll = (e) => {
   e.preventDefault();
 }
@@ -50,7 +52,7 @@ menuToggler.addEventListener('click', (e) => {
     // TODO: find out how to get rid of setTimeout
     setTimeout(() => {
       menu.classList.remove('navigation__list--show');
-      document.body.classList.remove('navigation--forbid-scroll');
+      body.classList.remove('forbid-scroll');
       menu.classList.remove('navigation__list--hide');
       menuToggler.classList.remove('navigation__toggler--open');
     }, 500);
@@ -59,7 +61,7 @@ menuToggler.addEventListener('click', (e) => {
   menu.classList.remove('navigation__list--hide');
   menu.classList.add('navigation__list--show');
   menuToggler.classList.add('navigation__toggler--open');
-  document.body.classList.add('forbid-scroll');
+  body.classList.add('forbid-scroll');
 });
 
 const menuItems = document.querySelectorAll('.navigation__link');
