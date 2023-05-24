@@ -339,10 +339,23 @@ a {
 
 .navigation__item {
   display: flex;
+
+  margin: 15px 0 15px 70px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  @media (max-width: $lg) {
+    margin-left: 45px;
+  }
+
+  @media (max-width: $md) {
+    margin: 0;
+  }
 }
 
 .navigation__link {
-  margin: 15px 0 15px 100px;
   width: 100%;
 
   position: relative;
@@ -359,12 +372,7 @@ a {
     font-size: 22px;
   }
 
-  @media (max-width: $lg) {
-    margin-left: 75px;
-  }
-
   @media (max-width: $md) {
-    margin: 0;
     padding: 20px 35px;
 
     font-size: 32px;
