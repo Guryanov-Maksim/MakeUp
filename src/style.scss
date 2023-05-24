@@ -483,28 +483,24 @@ a {
   position: relative;
 
   font-size: 64px;
+  line-height: 1.2;
+  letter-spacing: 0px;
 
   @media (max-width: $xl) {
     padding-left: 95px;
 
     font-size: 40px;
-    line-height: 1.2;
-    letter-spacing: 0px;
   }
 
   @media (max-width: $md) {
     padding-left: 135px;
-
-    font-size: 40px;
-    line-height: 1.2;
-    letter-spacing: 0px;
   }
 
   @media (max-width: $sm) {
     padding-left: 95px;
     margin-bottom: 24px;
 
-    font-size: 28px;
+    font-size: 32px;
     line-height: 1.2;
     letter-spacing: 0px;
   }
@@ -551,7 +547,7 @@ a {
   }
 
   @media (max-width: $sm) {
-    font-size: 18px;
+    font-size: 20px;
   }
 }
 
@@ -565,10 +561,6 @@ a {
     margin-bottom: 24px;
 
     font-size: 16px;
-  }
-
-  @media (max-width: $md) {
-    font-size: 15px;
   }
 }
 
