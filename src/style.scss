@@ -1297,6 +1297,47 @@ table {
   }
 }
 
+.contacts__whatsapp {
+  &::before {
+    position: absolute;
+    content: "";
+    top: 5px;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    // background-color: black;
+    background: url("/assets/images/whatsapp.svg") no-repeat 0 0;
+    background-size: 25px 25px;
+    // background-image: url(/assets/images/phone.svg);
+    @media (max-width: $xl) {
+      top: 2px;
+      width: 25px;
+      height: 25px;
+      background-size: 20px 20px;
+    }
+  }
+}
+
+.contacts__telegram {
+  &::before {
+    position: absolute;
+    content: "";
+    top: 5px;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    // background-color: black;
+    background: url("/assets/images/telegram.svg") no-repeat 0 0;
+    background-size: 25px 25px;
+    @media (max-width: $xl) {
+      top: 2px;
+      width: 25px;
+      height: 25px;
+      background-size: 20px 20px;
+    }
+  }
+}
+
 .contacts__address::before {
   position: absolute;
   content: "";
