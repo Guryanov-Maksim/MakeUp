@@ -191,11 +191,11 @@ let startX, startY, endX, endY;
 const handleSwipe = () => {
   const xDiff = endX - startX;
   const yDiff = endY - startY;
-  if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff > 0) {
+  if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff > 90) {
     nextButtonHandler();
   }
 
-  if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff < 0) {
+  if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff < -90) {
     prevButtonHandler();
   }
 }
@@ -207,18 +207,18 @@ const openPortfolioModal = () => {
 
   const content = document.createElement('div');
   content.classList.add('portfolio-modal__content');
-  content.addEventListener('touchstart', (event) => {
-    const touch = event.touches[0];
-    startX = touch.clientX;
-    startY = touch.clientY;
-  }, false);
+  // content.addEventListener('touchstart', (event) => {
+  //   const touch = event.touches[0];
+  //   startX = touch.clientX;
+  //   startY = touch.clientY;
+  // }, false);
 
-  content.addEventListener('touchend', (event) => {
-    const touch = event.changedTouches[0];
-    endX = touch.clientX;
-    endY = touch.clientY;
-    handleSwipe();
-  }, false);
+  // content.addEventListener('touchend', (event) => {
+  //   const touch = event.changedTouches[0];
+  //   endX = touch.clientX;
+  //   endY = touch.clientY;
+  //   handleSwipe();
+  // }, false);
 
   const prevButton = document.createElement('button');
   prevButton.classList.add('portfolio-modal__prev');
