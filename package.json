@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "vite",
-    "start:backend": "fastify start server/index.js -w -P -V -l info --port 3000 -a 0.0.0.0",
+    "start:backend": "fastify start server/index.js -w -P -V -l info --port 80 -a 95.163.243.72",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
