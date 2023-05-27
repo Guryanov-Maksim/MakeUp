@@ -344,11 +344,19 @@ const scaleImage = (modalState, content, event) => {
   modalState.scaled = true;
   
   let Ydiff;
+  let Xdiff;
+  // let diff;
   if (event.type === 'wheel') {
     // modalState.startY = 
     Ydiff = event.deltaY;
   } else {
-    Ydiff = event.changedTouches[0].clientX - modalState.startX;
+    Xdiff = event.changedTouches[0].clientX - modalState.startX;
+    Ydiff = event.changedTouches[0].clientY - modalState.startY;
+    if (Math.abs(Xdiff) > Math.abs(Ydiff)) {
+      Ydiff = Xdiff
+    } else {
+      Ydiff = Ydiff
+    }
   }
   // const Ydiff = event.changedTouches[0].clientY - startY;
   // const Ydiff = event.changedTouches[0].clientX - modalState.startX;
