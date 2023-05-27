@@ -35,6 +35,89 @@ const idToPhotoUrl = {
   15: photo15Url,
 }
 
+const idToimages = {
+  // 1: {
+  //   url: photo1Url,
+  //   width: 524,
+  //   height: 265,
+  // },
+  1: {
+    url: photo1Url,
+    width: 3968,
+    height: 4960,
+  },
+  2: {
+    url: photo2Url,
+    width: 4160,
+    height: 5200,
+  },
+  3: {
+    url: photo3Url,
+    width: 3024,
+    height: 4032,
+  },
+  4: {
+    url: photo4Url,
+    width: 3024,
+    height: 4032,
+  },
+  5: {
+    url: photo5Url,
+    width: 3024,
+    height: 4032,
+  },
+  6: {
+    url: photo6Url,
+    width: 3024,
+    height: 4032,
+  },
+  7: {
+    url: photo7Url,
+    width: 1707,
+    height: 2560,
+  },
+  8: {
+    url: photo8Url,
+    width: 1707,
+    height: 2560,
+  },
+  9: {
+    url: photo9Url,
+    width: 4128,
+    height: 6192,
+  },
+  10: {
+    url: photo10Url,
+    width: 3024,
+    height: 4032,
+  },
+  11: {
+    url: photo11Url,
+    width: 3024,
+    height: 4032,
+  },
+  12: {
+    url: photo12Url,
+    width: 3024,
+    height: 4032,
+  },
+  13: {
+    url: photo13Url,
+    width: 3024,
+    height: 4032,
+  },
+  14: {
+    url: photo14Url,
+    width: 3024,
+    height: 4032,
+  },
+  15: {
+    url: photo4Url,
+    width: 3024,
+    height: 4032,
+  },
+}
+
 const menuToggler = document.querySelector('.navigation__toggler');
 
 const menu = document.querySelector('.navigation__list');
@@ -100,22 +183,75 @@ const closePortfolioModal = () => {
   modal.remove();
 }
 
-const positionButton = () => {
-  const img = document.querySelector(".portfolio-modal__photo");
-  const btn = document.querySelector(".portfolio-modal__close-button");
-  // const isMobile = navigator.userAgentData.mobile;
-
-  if (img && btn) {
-    const imgRect = img.getBoundingClientRect();
-    const imgTop = imgRect.top - 30;
-    // const imgRight = isMobile ? imgRect.right : imgRect.right + 20; // TODO: find out why sometimes mobile and desktop browsers calculate differently
-
-    btn.style.top = `${imgTop}px`;
-    btn.style.right = `${window.innerWidth - imgRect.right}px`;
-  }
+const modalState = {
+  intermediateX: 0,
+  intermediateY: 0,
+  intermediateScaledWidth: 0,
+  intermediateScaledHeight: 0,
+  scaled: false,
+  startX: 0,
+  startY: 0,
+  x: 0,
+  y: 0,
+  intermediateScaledX: 0,
+  intermediateScaledY: 0,
+  sizeX: 0,
+  sizeY: 0,
+  currentSizeX: 0,
+  currentSizeY: 0,
+  maxHeight: 0,
+  paddingForButtons: 0,
+  maxWidth: 1200,
 };
 
-window.addEventListener("resize", positionButton);
+const calcInitSize = (modalState, content, photoId) => {
+  modalState.sizeX = idToimages[activePhotoId].width;
+  modalState.sizeY = idToimages[activePhotoId].height;
+  const { innerWidth, innerHeight } = window;
+  modalState.maxWidth = 1200;
+  modalState.maxHeight = innerHeight - 60;
+  const pad = 120;
+  modalState.paddingForButtons = (innerWidth > 772) ? pad : 0;
+  
+
+  if ((innerWidth * modalState.sizeY) > (innerHeight * modalState.sizeX)) {
+    modalState.currentSizeY = innerHeight;
+    modalState.currentSizeX = (innerHeight * modalState.sizeX) / modalState.sizeY;
+
+    if (modalState.currentSizeY > modalState.maxHeight) {
+      modalState.currentSizeY = modalState.maxHeight;
+      modalState.currentSizeX = (modalState.currentSizeY * modalState.sizeX) / modalState.sizeY;
+    }
+
+    content.style.width = `${modalState.currentSizeX}px`;
+    content.style.height = `${modalState.currentSizeY}px`;
+
+    modalState.x = (innerWidth - modalState.currentSizeX) / 2;
+    modalState.y = ((innerHeight - modalState.currentSizeY)) / 2;
+    content.style.transform = `translate(${modalState.x}px, ${modalState.y}px)`;
+  } else {
+    modalState.currentSizeX = Math.min(innerWidth - modalState.paddingForButtons, modalState.maxWidth);
+    modalState.currentSizeY = (modalState.currentSizeX * modalState.sizeY) / modalState.sizeX;
+    
+    if (modalState.currentSizeY > modalState.maxHeight) {
+      modalState.currentSizeY = modalState.maxHeight;
+      modalState.currentSizeX = (modalState.currentSizeY * modalState.sizeX) / modalState.sizeY;
+    }
+    content.style.width = `${modalState.currentSizeX}px`;
+    content.style.height = `${modalState.currentSizeY}px`;
+
+    // It is for google chrome desktop Почему-то смещает на 7 пикселей. Выяснить!!!
+    const padForGoogleDesktop = (!navigator?.userAgentData?.mobile && navigator?.userAgentData?.brands.find((item) => item.brand === 'Google Chrome'))
+    ? 14
+    : 0;
+
+    modalState.x = ((innerWidth - modalState.currentSizeX) - padForGoogleDesktop) / 2;
+    modalState.y = (innerHeight - modalState.currentSizeY) / 2;
+
+    content.style.transform = `translate(${modalState.x}px, ${modalState.y}px)`;
+  }
+
+}
 
 const prevButtonHandler = () => {
   const currentPhotoIndex = portfolioItems.findIndex(photo => photo.id === activePhotoId)
@@ -123,10 +259,12 @@ const prevButtonHandler = () => {
     ? portfolioItems.length - 1
     : currentPhotoIndex - 1;
 
-    activePhotoId = portfolioItems[nextIndex].id;
+  activePhotoId = portfolioItems[nextIndex].id;
 
   const content = document.querySelector('.portfolio-modal__content');
   content.innerHTML = '';
+
+  calcInitSize(modalState, content, activePhotoId);
 
   const closeButton = document.createElement('button');
   closeButton.classList.add('portfolio-modal__close-button');
@@ -142,7 +280,6 @@ const prevButtonHandler = () => {
     content.innerHTML = '';
     content.appendChild(img);
     content.appendChild(closeButton);
-    positionButton();
   });
 
   const div = document.createElement('div');
@@ -155,13 +292,15 @@ const nextButtonHandler = () => {
   const currentPhotoIndex = portfolioItems.findIndex(photo => photo.id === activePhotoId);
 
   const nextIndex = currentPhotoIndex + 1 >= portfolioItems.length
-  ? 0
-  : currentPhotoIndex + 1;
+    ? 0
+    : currentPhotoIndex + 1;
 
   activePhotoId = portfolioItems[nextIndex].id;
 
   const content = document.querySelector('.portfolio-modal__content');
   content.innerHTML = '';
+
+  calcInitSize(modalState, content, activePhotoId);
 
   const closeButton = document.createElement('button');
   closeButton.classList.add('portfolio-modal__close-button');
@@ -177,7 +316,6 @@ const nextButtonHandler = () => {
     content.innerHTML = '';
     content.appendChild(img);
     content.appendChild(closeButton);
-    positionButton();
   });
 
   const div = document.createElement('div');
@@ -198,27 +336,264 @@ const handleSwipe = () => {
   if (Math.abs(xDiff) > Math.abs(yDiff) && xDiff < -90) {
     prevButtonHandler();
   }
+};
+
+
+
+const scaleImage = (modalState, content, event) => {
+  modalState.scaled = true;
+  
+  let Ydiff;
+  if (event.type === 'wheel') {
+    // modalState.startY = 
+    Ydiff = event.deltaY;
+  } else {
+    Ydiff = event.changedTouches[0].clientX - modalState.startX;
+  }
+  // const Ydiff = event.changedTouches[0].clientY - startY;
+  // const Ydiff = event.changedTouches[0].clientX - modalState.startX;
+
+  const { innerWidth, innerHeight } = window;
+  if ((innerWidth * modalState.sizeY) > (innerHeight * modalState.sizeX)) {
+    modalState.intermediateScaledHeight = Math.max(modalState.currentSizeY + Ydiff, modalState.maxHeight);
+    modalState.intermediateScaledWidth = modalState.intermediateScaledHeight * modalState.sizeX / modalState.sizeY;
+
+    content.style.width = `${modalState.intermediateScaledWidth}px`;
+    content.style.height = `${modalState.intermediateScaledHeight}px`;
+  } else {
+    const maxWidthForMobile = innerWidth > 722
+      ? innerWidth - modalState.paddingForButtons
+      : innerWidth;
+
+    const minWidth = Math.min(maxWidthForMobile, modalState.maxWidth);
+    modalState.intermediateScaledWidth = Math.max(modalState.currentSizeX + Ydiff, minWidth);
+    modalState.intermediateScaledHeight = (modalState.intermediateScaledWidth * modalState.sizeY) / modalState.sizeX;
+    content.style.width = `${modalState.intermediateScaledWidth}px`;
+    content.style.height = `${modalState.intermediateScaledHeight}px`;
+  }
+
+  modalState.intermediateScaledX = modalState.x - Ydiff / 2;
+  modalState.intermediateScaledY = modalState.y - Ydiff / 2;
+
+  if (modalState.intermediateScaledHeight > innerHeight && modalState.intermediateScaledWidth > innerWidth) {
+    if ((modalState.intermediateScaledY) >= 0) {
+      modalState.intermediateY = 0;
+    } else if (Math.abs(modalState.intermediateScaledY) >= (modalState.intermediateScaledHeight - innerHeight)) {
+      modalState.intermediateY = -(modalState.intermediateScaledHeight - innerHeight) / 2;
+    } else {
+      modalState.intermediateY = modalState.intermediateScaledY;
+    }
+    if ((modalState.intermediateScaledX) > 0) {
+      modalState.intermediateX = 0;
+    } else if (Math.abs(modalState.intermediateScaledX) >= (modalState.intermediateScaledWidth - innerWidth)) {
+      modalState.intermediateX = -(modalState.intermediateScaledWidth - innerWidth) / 2;
+    } else {
+      modalState.intermediateX = modalState.intermediateScaledX;
+    }
+  } else if (modalState.intermediateScaledHeight > innerHeight) {
+    if ((modalState.intermediateScaledY) >= 0) {
+      modalState.intermediateY = 0;
+    } else if (Math.abs(modalState.intermediateScaledY) >= (modalState.intermediateScaledHeight - innerHeight)) {
+      modalState.intermediateY = -(modalState.intermediateScaledHeight - innerHeight);
+    } else {
+      modalState.intermediateY = modalState.intermediateScaledY;
+    }
+    modalState.intermediateX = Math.abs(modalState.intermediateScaledWidth - innerWidth) / 2;
+  } else if (modalState.intermediateScaledWidth > innerWidth) {
+    if ((modalState.intermediateScaledX) >= 0) {
+      modalState.intermediateX = 0;
+    } else if (Math.abs(modalState.intermediateScaledX) >= (modalState.intermediateScaledWidth - innerWidth)) {
+      modalState.intermediateX = -(modalState.intermediateScaledWidth - innerWidth);
+    } else {
+      modalState.intermediateX = modalState.intermediateScaledX;
+    }
+    modalState.intermediateY = Math.abs(modalState.intermediateScaledHeight - innerHeight) / 2;;
+  } else {
+    modalState.intermediateX = Math.abs(modalState.intermediateScaledWidth - innerWidth) / 2;
+    modalState.intermediateY = Math.abs(modalState.intermediateScaledHeight - innerHeight) / 2;
+  }
+
+  content.style.transform = `translate(${modalState.intermediateX}px, ${modalState.intermediateY}px)`;
+
+  if (event.type === 'wheel') {
+    modalState.x = modalState.intermediateX;
+    modalState.y = modalState.intermediateY;
+    modalState.currentSizeX = modalState.intermediateScaledWidth;
+    modalState.currentSizeY = modalState.intermediateScaledHeight;
+  }
+};
+
+const moveImage = (modalState, content) => {
+
 }
+
+// const handleScroll = (event) => {
+//   event.preventDefault();
+//   // console.log(event.ctrlKey);
+//   if (event.ctrlKey) {
+//     scaleImage();
+//   }
+
+//   if (event.deltaY > 0) {
+//     nextButtonHandler();
+//   } else {
+//     prevButtonHandler();
+//   }
+// };
 
 const openPortfolioModal = () => {
   const modal = document.createElement('div');
   modal.classList.add('portfolio-modal');
-  modal.addEventListener("load", positionButton);
 
   const content = document.createElement('div');
   content.classList.add('portfolio-modal__content');
-  // content.addEventListener('touchstart', (event) => {
-  //   const touch = event.touches[0];
-  //   startX = touch.clientX;
-  //   startY = touch.clientY;
-  // }, false);
 
-  // content.addEventListener('touchend', (event) => {
-  //   const touch = event.changedTouches[0];
-  //   endX = touch.clientX;
-  //   endY = touch.clientY;
-  //   handleSwipe();
-  // }, false);
+  calcInitSize(modalState, content, activePhotoId);
+
+  window.addEventListener('resize', () => {
+    calcInitSize(modalState, content, activePhotoId);
+  });
+
+  modal.addEventListener('wheel', (event) => {
+    event.preventDefault();
+  
+    if (event.ctrlKey) {
+      scaleImage(modalState, content, event);
+      return;
+    }
+
+    if (event.deltaY > 0) {
+      nextButtonHandler();
+    } else {
+      prevButtonHandler();
+    }
+  });
+
+  content.addEventListener('touchend', (event) => {
+    modalState.x = modalState.intermediateX;
+    modalState.y = modalState.intermediateY;
+    modalState.currentSizeX = modalState.intermediateScaledWidth;
+    modalState.currentSizeY = modalState.intermediateScaledHeight;
+  }, false);
+
+  // window.addEventListener([])
+
+  content.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+
+    if (event.shiftKey || event.changedTouches.length > 1) {
+      scaleImage(modalState, content);
+      return;
+    }
+
+    if (modalState.startX < event.changedTouches[0].clientX) {
+      const Xdiff = event.changedTouches[0].clientX - modalState.startX;
+      const Ydiff = event.changedTouches[0].clientY - modalState.startY;
+
+      if (modalState.scaled) {
+        const rect = content.getBoundingClientRect();
+        const { innerWidth, innerHeight } = window;
+        if (rect.height > innerHeight && rect.width > innerWidth) {
+          if ((modalState.y + Ydiff) >= 0) {
+            modalState.intermediateY = 0;
+          } else if (Math.abs(modalState.y + Ydiff) >= (rect.height - innerHeight)) {
+            modalState.intermediateY = -(rect.height - innerHeight);
+          } else {
+            modalState.intermediateY = modalState.y + Ydiff;
+          }
+          if ((modalState.x + Xdiff) > 0) {
+            modalState.intermediateX = 0;
+          } else if (Math.abs(modalState.x + Xdiff) >= (rect.width - innerWidth)) {
+            modalState.intermediateX = -(rect.width - innerWidth);
+          } else {
+            modalState.intermediateX = modalState.x + Xdiff;
+          }
+        } else if (rect.height > innerHeight) {
+          if ((modalState.y + Ydiff) >= 0) {
+            modalState.intermediateY = 0;
+          } else if (Math.abs(modalState.y + Ydiff) >= (rect.height - innerHeight)) {
+            modalState.intermediateY = -(rect.height - innerHeight);
+          } else {
+            modalState.intermediateY = modalState.y + Ydiff;
+          }
+          modalState.intermediateX = modalState.x;
+        } else if (rect.width > innerWidth) {
+          if ((modalState.x + Xdiff) > 0) {
+            modalState.intermediateX = 0;
+          } else if (Math.abs(modalState.x + Xdiff) >= (rect.width - innerWidth)) {
+            modalState.intermediateX = -(rect.width - innerWidth);
+          } else {
+            modalState.intermediateX = modalState.x + Xdiff;
+          }
+          modalState.intermediateY = modalState.y;
+        }
+      } else {
+        modalState.intermediateX = modalState.x;
+        modalState.intermediateY = modalState.y;
+      }
+    }
+    if (modalState.startX > event.changedTouches[0].clientX) {
+      const Xdiff = modalState.startX - event.changedTouches[0].clientX;
+      const Ydiff = modalState.startY - event.changedTouches[0].clientY;
+
+      if (modalState.scaled) {
+        const rect = content.getBoundingClientRect();
+        const { innerWidth, innerHeight } = window;
+        if (rect.height > innerHeight && rect.width > innerWidth) {
+          if ((modalState.y - Ydiff) >= 0) {
+            modalState.intermediateY = 0;
+          } else if (Math.abs(modalState.y - Ydiff) >= (rect.height - innerHeight)) {
+            modalState.intermediateY = -(rect.height - innerHeight);
+          } else {
+            modalState.intermediateY = modalState.y - Ydiff;
+          }
+          if ((modalState.x - Xdiff) > 0) {
+            modalState.intermediateX = 0;
+          } else if (Math.abs(modalState.x - Xdiff) >= (rect.width - innerWidth)) {
+            modalState.intermediateX = -(rect.width - innerWidth);
+          } else {
+            modalState.intermediateX = modalState.x - Xdiff;
+          }
+        } else if (rect.height > innerHeight) {
+          if ((modalState.y - Ydiff) >= 0) {
+            modalState.intermediateY = 0;
+          } else if (Math.abs(modalState.y - Ydiff) >= (rect.height - innerHeight)) {
+            modalState.intermediateY = -(rect.height - innerHeight);
+          } else {
+            modalState.intermediateY = modalState.y - Ydiff;
+          }
+          modalState.intermediateX = modalState.x;
+        } else if (rect.width > innerWidth) {
+          if ((modalState.x - Xdiff) > 0) {
+            modalState.intermediateX = 0;
+          } else if (Math.abs(modalState.x - Xdiff) >= (rect.width - innerWidth)) {
+            modalState.intermediateX = -(rect.width - innerWidth);
+          } else {
+            modalState.intermediateX = modalState.x - Xdiff;
+          }
+          modalState.intermediateY = modalState.y;
+        }
+      } else {
+        modalState.intermediateX = modalState.x;
+        modalState.intermediateY = modalState.y;
+      }
+    }
+
+    content.style.transform = `translate(${modalState.intermediateX}px, ${modalState.intermediateY}px)`;
+  }, false);
+
+  // window.addEventListener('scroll', );
+
+  content.addEventListener('touchstart', (event) => {
+    // modalState.currentSizeX = modalState.stateX,
+    // modalState.currentSizeY = modalState.stateY,
+    modalState.intermediateX = modalState.x;
+    modalState.intermediateY = modalState.y;
+
+    const touch = event.touches[0];
+    modalState.startX = touch.clientX;
+    modalState.startY = touch.clientY;
+  }, false);
 
   const prevButton = document.createElement('button');
   prevButton.classList.add('portfolio-modal__prev');
@@ -246,7 +621,6 @@ const openPortfolioModal = () => {
     content.innerHTML = '';
     content.appendChild(img);
     content.appendChild(closeButton);
-    positionButton();
   });
 
   const isLeftArrowKey = (keyCode) => keyCode === 37;
