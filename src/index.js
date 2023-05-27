@@ -482,7 +482,7 @@ const openPortfolioModal = () => {
     event.preventDefault();
 
     if (event.shiftKey || event.changedTouches.length > 1) {
-      scaleImage(modalState, content);
+      scaleImage(modalState, content, event);
       return;
     }
 
