@@ -7,7 +7,7 @@
   "scripts": {
     "build": "vite build",
     "preview": "vite preview",
-    "start": "vite",
+    "start": "vite --host",
     "start:backend": "fastify start server/index.js -w -P -V -l info --port 4000 -a 0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
