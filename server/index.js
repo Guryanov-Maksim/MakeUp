@@ -24,6 +24,10 @@ const app = async (fastify, opts) => {
   fastify.get('/', async (request, reply) => {
     return reply.sendFile('index.html');
   })
+
+  fastify.get('/contacts', async (request, reply) => {
+    return reply.sendFile('/contacts/index.html');
+  })
 }
 
 export default app;
