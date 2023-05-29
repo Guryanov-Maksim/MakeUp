@@ -202,9 +202,11 @@ const modalState = {
   maxHeight: 0,
   paddingForButtons: 0,
   maxWidth: 1200,
+  Ydiff: 0,
 };
 
 const calcInitSize = (modalState, content, photoId) => {
+  // console.log('4444444444444444444444444444444')
   modalState.sizeX = idToimages[activePhotoId].width;
   modalState.sizeY = idToimages[activePhotoId].height;
   const { innerWidth, innerHeight } = window;
@@ -338,29 +340,8 @@ const handleSwipe = () => {
   }
 };
 
-
-
-const scaleImage = (modalState, content, event) => {
-  modalState.scaled = true;
-  
-  let Ydiff;
-  let Xdiff;
-  // let diff;
-  if (event.type === 'wheel') {
-    // modalState.startY = 
-    Ydiff = event.deltaY;
-  } else {
-    Xdiff = event.changedTouches[0].clientX - modalState.startX;
-    Ydiff = event.changedTouches[0].clientY - modalState.startY;
-    if (Math.abs(Xdiff) > Math.abs(Ydiff)) {
-      Ydiff = Xdiff
-    } else {
-      Ydiff = Ydiff
-    }
-  }
-  // const Ydiff = event.changedTouches[0].clientY - startY;
-  // const Ydiff = event.changedTouches[0].clientX - modalState.startX;
-
+const calcScaledSize = (modalState, content, Ydiff) => {
+  console.log(Ydiff);
   const { innerWidth, innerHeight } = window;
   if ((innerWidth * modalState.sizeY) > (innerHeight * modalState.sizeX)) {
     modalState.intermediateScaledHeight = Math.max(modalState.currentSizeY + Ydiff, modalState.maxHeight);
@@ -392,6 +373,7 @@ const scaleImage = (modalState, content, event) => {
       modalState.intermediateY = modalState.intermediateScaledY;
     }
     if ((modalState.intermediateScaledX) > 0) {
+      console.log('------------------')
       modalState.intermediateX = 0;
     } else if (Math.abs(modalState.intermediateScaledX) >= (modalState.intermediateScaledWidth - innerWidth)) {
       modalState.intermediateX = -(modalState.intermediateScaledWidth - innerWidth) / 2;
@@ -409,6 +391,7 @@ const scaleImage = (modalState, content, event) => {
     modalState.intermediateX = Math.abs(modalState.intermediateScaledWidth - innerWidth) / 2;
   } else if (modalState.intermediateScaledWidth > innerWidth) {
     if ((modalState.intermediateScaledX) >= 0) {
+      console.log('-----------111111111111111111111111111 -------')
       modalState.intermediateX = 0;
     } else if (Math.abs(modalState.intermediateScaledX) >= (modalState.intermediateScaledWidth - innerWidth)) {
       modalState.intermediateX = -(modalState.intermediateScaledWidth - innerWidth);
@@ -422,12 +405,109 @@ const scaleImage = (modalState, content, event) => {
   }
 
   content.style.transform = `translate(${modalState.intermediateX}px, ${modalState.intermediateY}px)`;
+}
+
+
+
+const scaleImage = (modalState, content, event) => {
+  // console.log(event.changedTouches);
+  modalState.scaled = true;
+  
+  let Ydiff;
+  let Xdiff;
+  let Ydiff2;
+  let Xdiff2;
 
   if (event.type === 'wheel') {
+    Ydiff = event.deltaY;
+    calcScaledSize(modalState, content, Ydiff);
+
     modalState.x = modalState.intermediateX;
     modalState.y = modalState.intermediateY;
     modalState.currentSizeX = modalState.intermediateScaledWidth;
     modalState.currentSizeY = modalState.intermediateScaledHeight;
+  } else {
+    if (event.changedTouches.length > 1) {
+      // console.log(event.changedTouches);
+      // Xdiff = event.changedTouches[0].clientX - modalState.startX;
+      // Ydiff = event.changedTouches[0].clientY - modalState.startY;
+      // Xdiff2 = event.changedTouches[1].clientX - modalState.startX2;
+      // Ydiff2 = event.changedTouches[1].clientY - modalState.startY2;
+      // const x1 = modalState.startX + Xdiff;
+      // const x2 = modalState.startX2 + Xdiff2;
+      // const absEndX = (x2 > x1)
+      // ? (x2 - x1)
+      // : x1 - x2;
+      // const absInitX = (modalState.startX > modalState.startX2)
+      //   ? modalState.startX - modalState.startX2
+      //   : modalState.startX2 - modalState.startX;
+      
+      // if (absInitX > absEndX) {
+      //   Ydiff = - (Math.abs(Xdiff) + Math.abs(Xdiff2)) * 2;
+      // } else {
+      //   Ydiff = Math.abs(Xdiff) + Math.abs(Xdiff2) * 2;
+      // }
+      // // calcScaledSize(modalState, content, Ydiff)
+ 
+      const startPoint1 = { x: modalState.startX, y: modalState.startY };
+      const startPoint2 = { x: modalState.startX2, y: modalState.startY2 };
+      const endPoint1 = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
+      const endPoint2 = { x: event.changedTouches[1].clientX, y: event.changedTouches[1].clientY };
+
+      const calcDistance = (point1, point2) => {
+        // let difffX;
+        // if (point1.x > point2.x) {
+        //   const difffX = point1.x - point2.x;
+        // } else {
+        //   const difffX = point2.x - point1.x;
+        // }
+
+        // let difffY;
+        // if (point1.y > point2.y) {
+        //   const difffY = point1.y - point2.y;
+        // } else {
+        //   const difffY = point2.y - point1.y;
+        // }
+
+        return Math.sqrt(Math.pow((point2.x - point1.x), 2) + Math.pow((point2.y - point1.y), 2))
+      }
+
+      // const startPoint1 = { x: }
+      const startDistance = calcDistance(startPoint1, startPoint2);
+      const endDistance = calcDistance(endPoint1, endPoint2);
+      const diff = endDistance - startDistance;
+      // const scale = endDistance + startDistance
+      console.log(`start distance = ${startDistance}`);
+      console.log(`end distance = ${endDistance}`);
+      if (endDistance < startDistance) {
+        // const scale = startDistance - endDistance;
+        calcScaledSize(modalState, content, diff)
+      } else {
+        // const scale = endDistance - startDistance;
+        calcScaledSize(modalState, content, diff)
+      }
+
+      console.log(`--------------- ${calcDistance(startPoint1, startPoint2)} -------------------`)
+      console.log(`--------------- ${calcDistance(startPoint2, startPoint1)} -------------------`)
+      console.log(`--------------- ${calcDistance(endPoint1, endPoint2)} -------------------`)
+
+        // calcScaledSize(modalState, content, diff)
+      // }
+      
+      // let difffX;
+      // if (startPoint1.x > endPoint1.x) {
+      //   const difffX = startPoint1.x - endPoint1.x;
+      // } else {
+      //   const difffX = endPoint1.x - startPoint1.x;
+      // }
+
+      // let difffY;
+      // if (startPoint1.y > endPoint1.y) {
+      //   const difffY = startPoint1.y - endPoint1.y;
+      // } else {
+      //   const difffY = endPoint1.y - startPoint1.y;
+      // }
+    } 
   }
 };
 
@@ -482,112 +562,114 @@ const openPortfolioModal = () => {
     modalState.y = modalState.intermediateY;
     modalState.currentSizeX = modalState.intermediateScaledWidth;
     modalState.currentSizeY = modalState.intermediateScaledHeight;
+    console.log(modalState);
   }, false);
 
   // window.addEventListener([])
 
   content.addEventListener('touchmove', (event) => {
     event.preventDefault();
+    // console.log(event);
 
-    if (event.shiftKey || event.changedTouches.length > 1) {
+    if (event.shiftKey || event.touches.length > 1) {
       scaleImage(modalState, content, event);
       return;
     }
 
-    if (modalState.startX < event.changedTouches[0].clientX) {
-      const Xdiff = event.changedTouches[0].clientX - modalState.startX;
-      const Ydiff = event.changedTouches[0].clientY - modalState.startY;
+    // if (modalState.startX < event.changedTouches[0].clientX) {
+    //   const Xdiff = event.changedTouches[0].clientX - modalState.startX;
+    //   const Ydiff = event.changedTouches[0].clientY - modalState.startY;
 
-      if (modalState.scaled) {
-        const rect = content.getBoundingClientRect();
-        const { innerWidth, innerHeight } = window;
-        if (rect.height > innerHeight && rect.width > innerWidth) {
-          if ((modalState.y + Ydiff) >= 0) {
-            modalState.intermediateY = 0;
-          } else if (Math.abs(modalState.y + Ydiff) >= (rect.height - innerHeight)) {
-            modalState.intermediateY = -(rect.height - innerHeight);
-          } else {
-            modalState.intermediateY = modalState.y + Ydiff;
-          }
-          if ((modalState.x + Xdiff) > 0) {
-            modalState.intermediateX = 0;
-          } else if (Math.abs(modalState.x + Xdiff) >= (rect.width - innerWidth)) {
-            modalState.intermediateX = -(rect.width - innerWidth);
-          } else {
-            modalState.intermediateX = modalState.x + Xdiff;
-          }
-        } else if (rect.height > innerHeight) {
-          if ((modalState.y + Ydiff) >= 0) {
-            modalState.intermediateY = 0;
-          } else if (Math.abs(modalState.y + Ydiff) >= (rect.height - innerHeight)) {
-            modalState.intermediateY = -(rect.height - innerHeight);
-          } else {
-            modalState.intermediateY = modalState.y + Ydiff;
-          }
-          modalState.intermediateX = modalState.x;
-        } else if (rect.width > innerWidth) {
-          if ((modalState.x + Xdiff) > 0) {
-            modalState.intermediateX = 0;
-          } else if (Math.abs(modalState.x + Xdiff) >= (rect.width - innerWidth)) {
-            modalState.intermediateX = -(rect.width - innerWidth);
-          } else {
-            modalState.intermediateX = modalState.x + Xdiff;
-          }
-          modalState.intermediateY = modalState.y;
-        }
-      } else {
-        modalState.intermediateX = modalState.x;
-        modalState.intermediateY = modalState.y;
-      }
-    }
-    if (modalState.startX > event.changedTouches[0].clientX) {
-      const Xdiff = modalState.startX - event.changedTouches[0].clientX;
-      const Ydiff = modalState.startY - event.changedTouches[0].clientY;
+    //   if (modalState.scaled) {
+    //     const rect = content.getBoundingClientRect();
+    //     const { innerWidth, innerHeight } = window;
+    //     if (rect.height > innerHeight && rect.width > innerWidth) {
+    //       if ((modalState.y + Ydiff) >= 0) {
+    //         modalState.intermediateY = 0;
+    //       } else if (Math.abs(modalState.y + Ydiff) >= (rect.height - innerHeight)) {
+    //         modalState.intermediateY = -(rect.height - innerHeight);
+    //       } else {
+    //         modalState.intermediateY = modalState.y + Ydiff;
+    //       }
+    //       if ((modalState.x + Xdiff) > 0) {
+    //         modalState.intermediateX = 0;
+    //       } else if (Math.abs(modalState.x + Xdiff) >= (rect.width - innerWidth)) {
+    //         modalState.intermediateX = -(rect.width - innerWidth);
+    //       } else {
+    //         modalState.intermediateX = modalState.x + Xdiff;
+    //       }
+    //     } else if (rect.height > innerHeight) {
+    //       if ((modalState.y + Ydiff) >= 0) {
+    //         modalState.intermediateY = 0;
+    //       } else if (Math.abs(modalState.y + Ydiff) >= (rect.height - innerHeight)) {
+    //         modalState.intermediateY = -(rect.height - innerHeight);
+    //       } else {
+    //         modalState.intermediateY = modalState.y + Ydiff;
+    //       }
+    //       modalState.intermediateX = modalState.x;
+    //     } else if (rect.width > innerWidth) {
+    //       if ((modalState.x + Xdiff) > 0) {
+    //         modalState.intermediateX = 0;
+    //       } else if (Math.abs(modalState.x + Xdiff) >= (rect.width - innerWidth)) {
+    //         modalState.intermediateX = -(rect.width - innerWidth);
+    //       } else {
+    //         modalState.intermediateX = modalState.x + Xdiff;
+    //       }
+    //       modalState.intermediateY = modalState.y;
+    //     }
+    //   } else {
+    //     modalState.intermediateX = modalState.x;
+    //     modalState.intermediateY = modalState.y;
+    //   }
+    // }
+    // if (modalState.startX > event.changedTouches[0].clientX) {
+    //   const Xdiff = modalState.startX - event.changedTouches[0].clientX;
+    //   const Ydiff = modalState.startY - event.changedTouches[0].clientY;
 
-      if (modalState.scaled) {
-        const rect = content.getBoundingClientRect();
-        const { innerWidth, innerHeight } = window;
-        if (rect.height > innerHeight && rect.width > innerWidth) {
-          if ((modalState.y - Ydiff) >= 0) {
-            modalState.intermediateY = 0;
-          } else if (Math.abs(modalState.y - Ydiff) >= (rect.height - innerHeight)) {
-            modalState.intermediateY = -(rect.height - innerHeight);
-          } else {
-            modalState.intermediateY = modalState.y - Ydiff;
-          }
-          if ((modalState.x - Xdiff) > 0) {
-            modalState.intermediateX = 0;
-          } else if (Math.abs(modalState.x - Xdiff) >= (rect.width - innerWidth)) {
-            modalState.intermediateX = -(rect.width - innerWidth);
-          } else {
-            modalState.intermediateX = modalState.x - Xdiff;
-          }
-        } else if (rect.height > innerHeight) {
-          if ((modalState.y - Ydiff) >= 0) {
-            modalState.intermediateY = 0;
-          } else if (Math.abs(modalState.y - Ydiff) >= (rect.height - innerHeight)) {
-            modalState.intermediateY = -(rect.height - innerHeight);
-          } else {
-            modalState.intermediateY = modalState.y - Ydiff;
-          }
-          modalState.intermediateX = modalState.x;
-        } else if (rect.width > innerWidth) {
-          if ((modalState.x - Xdiff) > 0) {
-            modalState.intermediateX = 0;
-          } else if (Math.abs(modalState.x - Xdiff) >= (rect.width - innerWidth)) {
-            modalState.intermediateX = -(rect.width - innerWidth);
-          } else {
-            modalState.intermediateX = modalState.x - Xdiff;
-          }
-          modalState.intermediateY = modalState.y;
-        }
-      } else {
-        modalState.intermediateX = modalState.x;
-        modalState.intermediateY = modalState.y;
-      }
-    }
+    //   if (modalState.scaled) {
+    //     const rect = content.getBoundingClientRect();
+    //     const { innerWidth, innerHeight } = window;
+    //     if (rect.height > innerHeight && rect.width > innerWidth) {
+    //       if ((modalState.y - Ydiff) >= 0) {
+    //         modalState.intermediateY = 0;
+    //       } else if (Math.abs(modalState.y - Ydiff) >= (rect.height - innerHeight)) {
+    //         modalState.intermediateY = -(rect.height - innerHeight);
+    //       } else {
+    //         modalState.intermediateY = modalState.y - Ydiff;
+    //       }
+    //       if ((modalState.x - Xdiff) > 0) {
+    //         modalState.intermediateX = 0;
+    //       } else if (Math.abs(modalState.x - Xdiff) >= (rect.width - innerWidth)) {
+    //         modalState.intermediateX = -(rect.width - innerWidth);
+    //       } else {
+    //         modalState.intermediateX = modalState.x - Xdiff;
+    //       }
+    //     } else if (rect.height > innerHeight) {
+    //       if ((modalState.y - Ydiff) >= 0) {
+    //         modalState.intermediateY = 0;
+    //       } else if (Math.abs(modalState.y - Ydiff) >= (rect.height - innerHeight)) {
+    //         modalState.intermediateY = -(rect.height - innerHeight);
+    //       } else {
+    //         modalState.intermediateY = modalState.y - Ydiff;
+    //       }
+    //       modalState.intermediateX = modalState.x;
+    //     } else if (rect.width > innerWidth) {
+    //       if ((modalState.x - Xdiff) > 0) {
+    //         modalState.intermediateX = 0;
+    //       } else if (Math.abs(modalState.x - Xdiff) >= (rect.width - innerWidth)) {
+    //         modalState.intermediateX = -(rect.width - innerWidth);
+    //       } else {
+    //         modalState.intermediateX = modalState.x - Xdiff;
+    //       }
+    //       modalState.intermediateY = modalState.y;
+    //     }
+    //   } else {
+    //     modalState.intermediateX = modalState.x;
+    //     modalState.intermediateY = modalState.y;
+    //   }
+    // }
 
-    content.style.transform = `translate(${modalState.intermediateX}px, ${modalState.intermediateY}px)`;
+    // content.style.transform = `translate(${modalState.intermediateX}px, ${modalState.intermediateY}px)`;
   }, false);
 
   // window.addEventListener('scroll', );
@@ -597,10 +679,18 @@ const openPortfolioModal = () => {
     // modalState.currentSizeY = modalState.stateY,
     modalState.intermediateX = modalState.x;
     modalState.intermediateY = modalState.y;
+    // console.log(modalState);
 
-    const touch = event.touches[0];
-    modalState.startX = touch.clientX;
-    modalState.startY = touch.clientY;
+    if (event.touches.length > 1) {
+      const touch = event.touches[0];
+      const touch2 = event.touches[1];
+      modalState.startX = touch.clientX;
+      modalState.startY = touch.clientY;
+      modalState.startX2 = touch2.clientX;
+      modalState.startY2 = touch2.clientY;
+      console.log(modalState);
+    }
+    
   }, false);
 
   const prevButton = document.createElement('button');
