@@ -25,8 +25,16 @@ const app = async (fastify, opts) => {
     return reply.sendFile('index.html');
   })
 
+  fastify.get('/portfolio', async (request, reply) => {
+    return reply.sendFile('index.html');
+  })
+
   fastify.get('/contacts', async (request, reply) => {
-    return reply.sendFile('/contacts/index.html');
+    return reply.sendFile('index.html');
+  })
+
+  fastify.get('/prices', async (request, reply) => {
+    return reply.sendFile('index.html');
   })
 }
 
