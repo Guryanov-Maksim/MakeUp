@@ -13,6 +13,9 @@ import photo12Url from './assets/images/customers/photo_0012.jpg';
 import photo13Url from './assets/images/customers/photo_0013.jpg';
 import photo14Url from './assets/images/customers/photo_0014.jpg';
 import photo15Url from './assets/images/customers/photo_0015.jpg';
+import photo16Url from './assets/images/customers/photo_0016.jpg';
+import photo17Url from './assets/images/customers/photo_0017.jpg';
+import photo18Url from './assets/images/customers/photo_0018.jpg';
 
 import mainPagePhoto1Url from './assets/images/customers/rectangle/photo_0001_550_265.jpg'
 import mainPagePhoto6Url from './assets/images/customers/square/photo_0006_265.jpg'
@@ -36,6 +39,9 @@ import galleryPreviewPhoto12Url from './assets/images/customers/gallery/photo_00
 import galleryPreviewPhoto14Url from './assets/images/customers/gallery/photo_0014_720_350.jpg';
 import galleryPreviewPhoto13Url from './assets/images/customers/gallery/photo_0013_350.jpg';
 import galleryPreviewPhoto15Url from './assets/images/customers/gallery/photo_0015_350.jpg';
+import galleryPreviewPhoto16Url from './assets/images/customers/gallery/photo_0016_720_350.jpg';
+import galleryPreviewPhoto17Url from './assets/images/customers/gallery/photo_0017_350.jpg';
+import galleryPreviewPhoto18Url from './assets/images/customers/gallery/photo_0018_350.jpg';
 
 export const mainPagePhotos = [
   { previewPhotourl: mainPagePhoto1Url, src: photo1Url, id: 1, index: 0 },
@@ -62,4 +68,7 @@ export const galleryPagePhotos = [
   { previewPhotourl: galleryPreviewPhoto14Url, src: photo14Url, id: 14, index: 12 },
   { previewPhotourl: galleryPreviewPhoto13Url, src: photo13Url, id: 13, index: 13 },
   { previewPhotourl: galleryPreviewPhoto15Url, src: photo15Url, id: 15, index: 14 },
+  { previewPhotourl: galleryPreviewPhoto18Url, src: photo18Url, id: 16, index: 15 },
+  { previewPhotourl: galleryPreviewPhoto17Url, src: photo17Url, id: 17, index: 16 },
+  { previewPhotourl: galleryPreviewPhoto16Url, src: photo16Url, id: 16, index: 17 },
 ];

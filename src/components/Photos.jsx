@@ -6,7 +6,7 @@ import cn from 'classnames';
 import "yet-another-react-lightbox/styles.css";
 
 const leftRectangle = [0, 6, 12];
-const rightRectangle = [5, 11];
+const rightRectangle = [5, 11, 17];
 const rightSquare = [2, 8, 14];
 
 const Photo = ({ photo, setOpen, setIndex }) => {
