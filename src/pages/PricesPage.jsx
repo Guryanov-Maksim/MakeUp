@@ -26,7 +26,7 @@ const PricesPage = () => {
                 </tr>
                 <tr className="price__service">
                   <td>Дневной макияж</td>
-                  <td>1 час 30 мин</td>
+                  <td>1 час</td>
                   <td>2500 руб.</td>
                 </tr>
                 <tr className="price__service">
