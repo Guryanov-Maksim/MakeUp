@@ -22,7 +22,7 @@ const PricesPage = () => {
                 <tr className="price__service">
                   <td>Экспресс-макияж</td>
                   <td>40 мин.</td>
-                  <td>1500 руб.</td>
+                  <td>2000 руб.</td>
                 </tr>
                 <tr className="price__service">
                   <td>Дневной макияж</td>
@@ -32,32 +32,32 @@ const PricesPage = () => {
                 <tr className="price__service">
                   <td>Вечерний макияж</td>
                   <td>1 час 30 мин</td>
-                  <td>2500 руб.</td>
+                  <td>3500 руб.</td>
                 </tr>
                 <tr className="price__service">
                   <td>Свадебный макияж</td>
                   <td>1 час 30 мин</td>
-                  <td>3500 руб.</td>
+                  <td>4000 руб.</td>
                 </tr>
                 <tr className="price__service">
                   <td>Свадебный образ</td>
                   <td>3 ч.</td>
-                  <td>6000 руб.</td>
+                  <td>8000 руб.</td>
                 </tr>
                 <tr className="price__service">
                   <td>Свадебный образ с репетицией</td>
                   <td>6 ч.</td>
-                  <td>10000 руб.</td>
+                  <td>12000 руб.</td>
                 </tr>
                 <tr className="price__service">
                   <td>Укладка волос</td>
                   <td>40 мин. - 1 ч.</td>
-                  <td>1500 руб.</td>
+                  <td>2500 руб.</td>
                 </tr>
                 <tr className="price__service">
                   <td>Прическа</td>
                   <td>1 ч. 30 мин.</td>
-                  <td>2500 руб.</td>
+                  <td>3500 руб.</td>
                 </tr>
               </tbody>
             </table>
