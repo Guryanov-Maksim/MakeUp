@@ -71,7 +71,7 @@ const MainPage = () => {
                 <tr className="price__service">
                   <td>Свадебный макияж</td>
                   <td>1 час 30 мин</td>
-                  <td>4000 руб.</td>
+                  <td>3500 руб.</td>
                 </tr>
                 <tr className="price__service">
                   <td>Свадебный образ</td>
