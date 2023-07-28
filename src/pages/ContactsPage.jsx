@@ -26,7 +26,7 @@ const ContactsPage = () => {
                 </a>
                 <p className="contacts__address">
                   <span>МО, г. Жуковский</span>
-                  <span>ул. Ломоносова, д. 33, кв. 15</span>
+                  <span>ул. Амет-хан Султана, 15к1</span>
                 </p>
               </address>
             </div>
